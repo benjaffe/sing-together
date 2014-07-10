@@ -1,0 +1,7 @@
+<% songs.forEach(function(song, i){ %>
+<li class="song-list-item">
+    <a href="/songs/<%= i %>">
+        <span class="title"><%= song.title %></span><span ng-hide="!song.artist" class="artist"><%= song.artist %></span>
+    </a>
+</li>
+<% }) %>
