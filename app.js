@@ -1,6 +1,7 @@
-var express = require('express');
+var express = require('express.io');
 var http = require('http');
 var app = express();
+app.http().io();
 
 var path = require('path');
 var logger = require('morgan');
@@ -21,7 +22,17 @@ app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use(express.Router());
+app.locals.songs = require('./songs.json');
+
+app.io.route('ready', function(req) {
+    app.io.broadcast('new visitor', req.data);
+});
+app.io.route('scroll', function(req) {
+    app.io.broadcast('scroll', req.data);
+});
+
+// Routing
+// app.use(express.Router());
 
 app.get('/',function(req,res) {
     res.render('index', {
@@ -36,10 +47,6 @@ app.get('/songs/:songid?', function(req, res) {
         currentSong: song
     });
 });
-
-
-app.locals.songs = require('./songs.json');
-
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
