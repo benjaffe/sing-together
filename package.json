@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node app.js"
   },
-  "main": "./bin/www",
+  "main": "app.js",
   "engines": {
     "node": ">= 0.10",
     "npm": ">= 1.4"
