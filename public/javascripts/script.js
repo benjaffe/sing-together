@@ -1,6 +1,6 @@
 var socket = io.connect();
 
-var songIndex = location.pathname.split('songs/')[1];
+var songIndex = location.pathname.split('songs/')[1].split(':')[0];
 var scrollPos = [0,0];
 var state = {
 	songIndex: songIndex,
