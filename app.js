@@ -41,7 +41,7 @@ app.get('/',function(req,res) {
 });
 
 app.get('/songs/:songid?', function(req, res) {
-    var song = songs[req.params.songid];
+    var song = songs[req.params.songid.split(':')[0]];
     res.render('index', {
         title: 'Songs - ' + song.title,
         currentSong: song
