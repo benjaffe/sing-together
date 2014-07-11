@@ -32,6 +32,19 @@ html, body {margin:0;padding:0;font-family: Helvetica, sans-serif;height:100%;}
 	opacity:0;
 }
 
+.addsong-form {
+	display:none;
+	position: absolute;
+	top: 0;
+	left: 200px;
+	right: 0;
+	min-height:100%;
+	z-index: 100;
+	background: white;
+	padding:10px;
+	border:solid 1px #CCC;
+}
+
 .song-list-search {
 	position:fixed;
 	top:0;

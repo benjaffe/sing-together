@@ -6,6 +6,7 @@ app.http().io();
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 // http routes
 // var routes = require('./routes/index');
@@ -82,6 +83,16 @@ app.io.route('scroll', function(req) {
     },lockingDuration);
 });
 
+app.io.route('addsong', function(req){
+    var song = req.data;
+    console.log(songs.length);
+    songs.push(song);
+    console.log(songs.length);
+    fs.writeFile('songs.json',JSON.stringify(songs,null,'\t'), function(err) {
+        if (err) console.log('ERROR!', err);
+        else console.log('JSON successfully saved');
+    });
+});
 
 
 

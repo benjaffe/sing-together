@@ -66,6 +66,36 @@ function(socket, aim){
 			}
 		});
 
+		document.getElementById('addsong-form').addEventListener('submit',function(e) {
+			e.preventDefault();
+			console.log('adding fake song');
+			var song = {};
+			var getValue = function(key) {
+				return document.getElementById('newsong-' + key).value;
+			};
+
+			song.title = getValue('title');
+			song.artist = getValue('artist');
+			song.key = getValue('key');
+			song.capo = getValue('capo');
+			song.readiness = getValue('readiness');
+			song.whose = getValue('whose');
+			song.instruments = getValue('instruments');
+			song.lyrics = getValue('lyrics');
+			console.log(song);
+
+			socket.emit('addsong', song);
+
+		});
+
+		document.getElementById('addsong-start').addEventListener('click', function(e){
+			document.getElementById('addsong-form').style.display = 'block';
+		});
+		document.getElementById('addsong-cancel').addEventListener('click', function(e){
+			document.getElementById('addsong-form').style.display = 'none';
+		});
+
+
 		socket.on('scrollstart', function(data) {
 			var indicatorElem = document.createElement('div');
 			indicatorElem.className = 'scroll-indicator';
