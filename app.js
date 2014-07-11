@@ -17,6 +17,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
+app.use(express.cookieParser());
+app.use(express.session({secret: 'monkey'}))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -24,12 +26,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.songs = require('./songs.json');
 
-app.io.route('ready', function(req) {
-    app.io.broadcast('new visitor', req.data);
-});
-app.io.route('scroll', function(req) {
-    app.io.broadcast('scroll', req.data);
-});
 
 // Routing
 // app.use(express.Router());
@@ -41,7 +37,7 @@ app.get('/',function(req,res) {
 });
 
 app.get('/songs/:songid?', function(req, res) {
-    var song = songs[req.params.songid.split(':')[0]];
+    var song = songs[req.params.songid];
     res.render('index', {
         title: 'Songs - ' + song.title,
         currentSong: song
@@ -54,6 +50,38 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
+
+
+var locker;
+var lockingTimer;
+
+app.io.route('ready', function(req) {
+    app.io.broadcast('new visitor', req.data);
+    req.session.name = req.data;
+    req.io.emit('id', req.socket.id);
+});
+app.io.route('scroll', function(req) {
+    req.data.clientid = req.socket.id; //unique id
+    app.io.broadcast('scroll', req.data);
+
+    // locking logic
+    if (!lockingTimer) {
+        locker = req.data.clientid; //only set if we're unlocked
+        console.log('locked');
+    } else {
+        clearTimeout(lockingTimer);
+    }
+    lockingTimer = setTimeout(function(){
+        locker = undefined;
+        console.log('unlocked');
+        lockingTimer = undefined;
+    },1000);
+});
+
+
+
+
+
 
 /// error handlers
 
