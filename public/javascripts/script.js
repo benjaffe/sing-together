@@ -21,7 +21,7 @@ socket.on('connect', function(client){
 	socket.emit('ready', state);
 
 	document.addEventListener('scroll', function(e) {
-		if (scrollDisabled) return false;
+		if (aim.scrollDisabled()) return false;
 
 		var scrollPos = {x: window.scrollX, y: window.scrollY};
 		var data = {
@@ -44,43 +44,59 @@ socket.on('connect', function(client){
 	socket.on('scroll', function(data){
 		// console.log('SOMEONE ELSE IS SCROLLING!   ' + data.clientid + '   ' + state.clientid);
 		// console.log(Date.now() - data.timestamp);
-		scrollDisabled = true;
+		aim.scrollDisabled(true);
 		setTimeout(function(){
-			scrollDisabled = false;
+			aim.scrollDisabled(false);
 		},0);
 
 		var scrollPos = data.scrollPos;
 		// window.scrollTo(scrollPos.x, scrollPos.y);
-		animateScrollTo(scrollPos.x, scrollPos.y);
+		aim.animateScrollTo(scrollPos.x, scrollPos.y);
 		// console.log('Receiving scroll position ' + scrollPos.y);
 	});
 
 });
-var interval;
-var yTarget;
-var maxScrollSpeed = 60;
-var animateScrollTo = function(x,y) {
-	yTarget = y;
-	scrollDisabled = true;
-	console.log('scrolling from ' + window.scrollY + ' to ' + yTarget);
-	var scrollTickCoords = {x: window.scrollX, y: window.scrollY};
-	var offset;
-	var lead = 1;
-	if (interval) return false;
+var aim = (function(){
+	var interval;
+	var maxScrollSpeed = 60;
+	var scrollDisabled = false;
+	var scrollDestination;
+	return {
 
-	interval = setInterval(function(){
-		offset = yTarget - scrollTickCoords.y;
-		var offsetSign = Math.pow(offset,0);
+		animateScrollTo: function(x,y) {
+			var scrollNextTick = {x: window.scrollX, y: window.scrollY};
+			scrollDestination = {x: x, y: y};
+			scrollDisabled = true;
 
-		if (Math.abs(offset) >= 1) {
-			console.log(offset + '  ' + scrollTickCoords.y);
-			scrollTickCoords.y = scrollTickCoords.y + offset/10;
-			window.scrollTo(window.scrollX, scrollTickCoords.y);
-			// console.log(scrollTickCoords.y);
-		} else {
-			clearInterval(interval);
-			interval = null;
-			scrollDisabled = false;
+			var offset = {};
+			var lead = 1;
+
+			// console.log('scrolling from ' + window.scrollY + ' to ' + scrollDestination.y);
+
+			if (interval) return false;
+
+			interval = setInterval(function(){
+				offset = scrollDestination.y - scrollNextTick.y;
+				// console.log('animating from ' + window.scrollY + ' to ' + scrollDestination.y);
+				var offsetSign = Math.pow(offset,0);
+
+				if (Math.abs(offset) >= 1) {
+					scrollNextTick.y = scrollNextTick.y + offset/10;
+					window.scrollTo(window.scrollX, scrollNextTick.y);
+				} else {
+					clearInterval(interval);
+					interval = null;
+					scrollDisabled = false;
+				}
+			},16);
+		},
+
+		scrollDisabled: function(value) {
+			if (value)
+				scrollDisabled = value;
+			return scrollDisabled;
 		}
-	},16);
-};
+
+	};
+})();
+
