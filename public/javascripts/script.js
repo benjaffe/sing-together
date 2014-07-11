@@ -22,6 +22,7 @@ socket.on('connect', function(client){
 	socket.emit('ready', state);
 
 	document.addEventListener('scroll', function(e) {
+		// console.log(state.justAutoScrolled);
 		if (!state.justAutoScrolled) {
 
 			var scrollPos = {x: window.scrollX, y: window.scrollY};
@@ -31,20 +32,20 @@ socket.on('connect', function(client){
 				clientid: socket.id
 			};
 			socket.emit('scroll', data);
-			console.log('Sending scroll position');
+			// console.log('Sending scroll position');
 		}
 	});
 
 
 	socket.on('new visitor', function(data){
-		console.log(Date.now() - data.timestamp);
+		// console.log(Date.now() - data.timestamp);
 		if (data.songIndex !== songIndex) {
 			location.href = location.origin + '/songs/' + data.songIndex;
 		}
 	});
 
 	socket.on('scroll', function(data){
-		console.log('SOMEONE ELSE IS SCROLLING!   ' + data.clientid + '   ' + state.clientid);
+		// console.log('SOMEONE ELSE IS SCROLLING!   ' + data.clientid + '   ' + state.clientid);
 		// console.log(Date.now() - data.timestamp);
 		state.justAutoScrolled = true;
 		setTimeout(function(){
