@@ -61,18 +61,24 @@ app.io.route('ready', function(req) {
     req.io.emit('id', req.socket.id);
 });
 app.io.route('scroll', function(req) {
+    if (locker && locker !== req.socket.id) {
+        // console.log('invalid ' + locker + ' ' + req.socket.id);
+        return false;
+    } else {
+        // console.log('valid ' + locker + ' ' + req.socket.id);
+    }
     req.data.clientid = req.socket.id; //unique id
     req.io.broadcast('scroll', req.data);
     // locking logic
     if (!lockingTimer) {
         locker = req.data.clientid; //only set if we're unlocked
-        console.log('locked');
+        // console.log('locked by ' + locker);
     } else {
         clearTimeout(lockingTimer);
     }
     lockingTimer = setTimeout(function(){
         locker = undefined;
-        console.log('unlocked');
+        // console.log('unlocked');
         lockingTimer = undefined;
     },1000);
 });
