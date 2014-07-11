@@ -1,4 +1,4 @@
-var socket = io.connect();
+var socket = io.connect('http://singtogether-benjaffe.rhcloud.com/:8000');
 
 var songIndex = location.pathname.split('songs/')[1];
 var scrollPos = [0,0];
