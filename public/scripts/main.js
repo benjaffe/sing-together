@@ -15,6 +15,9 @@ function(socket, aim){
 	var state = {};
 	var scrollDisabled = false;
 
+	var body = document.body;
+    var html = document.documentElement;
+
 
 	socket.on('connect', function(client){
 
@@ -33,7 +36,15 @@ function(socket, aim){
 		document.addEventListener('scroll', function(e) {
 			if (aim.scrollDisabled()) return false;
 
-			var scrollPos = {x: window.scrollX, y: window.scrollY};
+			// code to get the document dimensions
+			var documentHeight = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
+			var documentWidth = Math.max( body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth );
+
+			// this represents our position (from 0 to 1) on the page
+			var scrollPos = {
+				x: window.scrollX / (documentWidth - window.innerWidth),
+				y: window.scrollY / (documentHeight - window.innerHeight)
+			};
 			var data = {
 				timestamp: Date.now(),
 				scrollPos: scrollPos,
@@ -46,7 +57,7 @@ function(socket, aim){
 
 		socket.on('new visitor', function(data){
 			// console.log(Date.now() - data.timestamp);
-			if (data.songIndex !== songIndex) {
+			if (data.songIndex && data.songIndex !== songIndex) {
 				location.href = location.origin + '/songs/' + data.songIndex;
 			}
 		});
@@ -73,10 +84,18 @@ function(socket, aim){
 				aim.scrollDisabled(false);
 			},0);
 
+			// code to get the document dimensions
+			var documentHeight = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
+			var documentWidth = Math.max( body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth );
+
 			var scrollPos = data.scrollPos;
-			// window.scrollTo(scrollPos.x, scrollPos.y);
-			aim.animateScrollTo(scrollPos.x, scrollPos.y);
-			// console.log('Receiving scroll position ' + scrollPos.y);
+
+			var scrollPosAbs = {
+				x: scrollPos.x * (documentWidth - window.innerWidth),
+				y: scrollPos.y * (documentHeight - window.innerHeight)
+			};
+
+			aim.animateScrollTo(scrollPosAbs.x, scrollPosAbs.y);
 		});
 
 	});
