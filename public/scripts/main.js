@@ -1,11 +1,12 @@
-console.log(require);
 require.config({
 	paths: {
 		'socket.io': '/socket.io/socket.io.js'
 	}
 });
+
 require(['socket.io','aim'],
 function(socket, aim){
+
 
 	socket = io.connect();
 
