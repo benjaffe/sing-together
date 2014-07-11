@@ -62,8 +62,7 @@ app.io.route('ready', function(req) {
 });
 app.io.route('scroll', function(req) {
     req.data.clientid = req.socket.id; //unique id
-    app.io.broadcast('scroll', req.data);
-
+    req.io.broadcast('scroll', req.data);
     // locking logic
     if (!lockingTimer) {
         locker = req.data.clientid; //only set if we're unlocked
