@@ -7,8 +7,7 @@ require.config({
 require(['socket.io','aim'],
 function(socket, aim){
 
-	console.log(aim);
-	var socket = io.connect();
+	socket = io.connect();
 
 	var songIndex = location.pathname.split('songs/')[1];
 	var scrollPos = [0,0];
