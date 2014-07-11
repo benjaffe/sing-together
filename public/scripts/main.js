@@ -51,9 +51,23 @@ function(socket, aim){
 			}
 		});
 
+		socket.on('scrollstart', function(data) {
+			var indicatorElem = document.createElement('div');
+			indicatorElem.className = 'scroll-indicator';
+			indicatorElem.style.top = window.scrollY+'px';
+			document.body.appendChild(indicatorElem);
+			setTimeout(function(){
+				indicatorElem.classList.add('fade');
+				setTimeout(function(){
+					indicatorElem.remove();
+				},4000);
+			},0);
+			console.log('Scroll start!');
+			console.log(indicatorElem);
+		});
+
 		socket.on('scroll', function(data){
-			// console.log('SOMEONE ELSE IS SCROLLING!   ' + data.clientid + '   ' + state.clientid);
-			// console.log(Date.now() - data.timestamp);
+
 			aim.scrollDisabled(true);
 			setTimeout(function(){
 				aim.scrollDisabled(false);
