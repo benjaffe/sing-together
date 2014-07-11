@@ -14,6 +14,8 @@ function(socket, aim){
 	var scrollPos = [0,0];
 	var state = {};
 	var scrollDisabled = false;
+    var timeOfLastScrollEvent = Date.now();
+    var minTimeBetweenScrollEvents = 50;
 
 	var body = document.body;
     var html = document.documentElement;
@@ -35,6 +37,7 @@ function(socket, aim){
 
 		document.addEventListener('scroll', function(e) {
 			if (aim.scrollDisabled()) return false;
+			if (Date.now() - timeOfLastScrollEvent < minTimeBetweenScrollEvents) return false;
 
 			// code to get the document dimensions
 			var documentHeight = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
@@ -51,6 +54,7 @@ function(socket, aim){
 				clientid: socket.id
 			};
 			socket.emit('scroll', data);
+			timeOfLastScrollEvent = Date.now();
 
 		});
 
