@@ -30,6 +30,7 @@ function(socket, aim, Hammer){
 
     mc.add(new Hammer.Tap({event: 'tripletap', taps: 3}));
     mc.add(new Hammer.Pinch());
+    mc.add(new Hammer.Pan({ direction: Hammer.DIRECTION_ALL }));
 
     mc.on('tripletap', function() {
     	html.classList.toggle('fullscreen');
