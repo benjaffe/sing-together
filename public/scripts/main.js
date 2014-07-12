@@ -24,11 +24,10 @@ function(socket, aim, Hammer){
     var songDetailElem = document.getElementById('song-detail');
 
     // event handling
-    var mc = new Hammer(songDetailElem);
-    var mcManager = mc.Manager(songDetailElem,{});
+    var mc = new Hammer.Manager(songDetailElem,{});
 
     mc.get('pinch').set({enable: true});
-    mcManager.add(new Hammer.Tap({event: 'tripletap', taps: 3}));
+    mc.add(new Hammer.Tap({event: 'tripletap', taps: 3}));
 
     mc.on('tripletap', function() {
     	html.classList.toggle('fullscreen');
