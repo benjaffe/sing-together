@@ -24,25 +24,25 @@ function(socket, aim, Hammer){
     var songDetailElem = document.getElementById('song-detail');
 
     // event handling
-    var mc = new Hammer(songDetailElem);
+    // var mc = new Hammer(songDetailElem);
     var mcCust = new Hammer.Manager(songDetailElem,{});
 
-    mc.get('pinch').set({enable: true});
+    // mc.get('pinch').set({enable: true});
     mcCust.add(new Hammer.Tap({event: 'tripletap', taps: 3}));
 
     mcCust.on('tripletap', function() {
     	html.classList.toggle('fullscreen');
     });
 
-    mc.on('pinchin pinchout', function(e) {
-    	var fs = parseFloat(body.style.fontSize) || 1;
-    	if (e.type === 'pinchin') {
-    		fs *= 1.1;
-    	} else {
-    		fs /= 1.1;
-    	}
-    	body.style.fontSize = fs + 'em';
-    });
+    // mc.on('pinchin pinchout', function(e) {
+    // 	var fs = parseFloat(body.style.fontSize) || 1;
+    // 	if (e.type === 'pinchin') {
+    // 		fs *= 1.1;
+    // 	} else {
+    // 		fs /= 1.1;
+    // 	}
+    // 	body.style.fontSize = fs + 'em';
+    // });
 
 
 	socket.on('connect', function(client){
