@@ -23,12 +23,19 @@ function(socket, aim){
     var songListElem = document.getElementById('song-list')
     var songDetailElem = document.getElementById('song-detail');
 
-    // event handling
-    songDetailElem.addEventListener('dblclick', function() {
+    var latestTap = Date.now();
+
+    // double-click event handling
+    songDetailElem.addEventListener('click', function() {
+    	var prevTap = latestTap;
+    	latestTap = Date.now();
+    	if (latestTap - prevTap > 500) return false;
+
     	html.classList.toggle('fullscreen');
     });
 
-    document.addEventListener('gestureend', function(e) {
+    document.addEventListener('ontouchend', function(e) {
+    	console.log(e);
 	    var fs = parseFloat(body.style.fontSize) || 1;
 	    if (e.scale < 0.9) {
 	        fs /= 1.1;
@@ -124,8 +131,8 @@ function(socket, aim){
 			setTimeout(function(){
 				indicatorElem.remove();
 			},4000);
-			console.log('Scroll start!');
-			console.log(indicatorElem);
+			// console.log('Scroll start!');
+			// console.log(indicatorElem);
 		});
 
 		socket.on('scroll', function(data){
