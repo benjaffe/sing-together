@@ -34,7 +34,7 @@ function(socket, aim){
     	html.classList.toggle('fullscreen');
     });
 
-    document.addEventListener('ontouchend', function(e) {
+    document.addEventListener('touchend', function(e) {
     	console.log(e);
 	    var fs = parseFloat(body.style.fontSize) || 1;
 	    if (e.scale < 0.9) {
