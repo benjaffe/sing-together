@@ -34,19 +34,6 @@ function(socket, aim){
     	html.classList.toggle('fullscreen');
     });
 
-    document.addEventListener('touchend', function(e) {
-    	console.log(e);
-	    var fs = parseFloat(body.style.fontSize) || 1;
-	    if (e.scale < 0.9) {
-	        fs /= 1.1;
-	    } else if (e.scale > 1.1) {
-	        fs *= 1.1;
-	    } else {
-	    	return false;
-	    }
-	    body.style.fontSize = fs + 'em';
-	}, false);
-
 
 	socket.on('connect', function(client){
 
