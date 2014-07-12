@@ -102,11 +102,8 @@ function(socket, aim){
 			indicatorElem.style.top = window.scrollY+'px';
 			document.body.appendChild(indicatorElem);
 			setTimeout(function(){
-				indicatorElem.classList.add('fade');
-				setTimeout(function(){
-					indicatorElem.remove();
-				},4000);
-			},0);
+				indicatorElem.remove();
+			},4000);
 			console.log('Scroll start!');
 			console.log(indicatorElem);
 		});
