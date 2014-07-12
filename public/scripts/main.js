@@ -1,11 +1,12 @@
 require.config({
 	paths: {
-		'socket.io': '/socket.io/socket.io.js'
+		'socket.io': '/socket.io/socket.io.js',
+		'hammer': 'hammer.min'
 	}
 });
 
-require(['socket.io','aim'],
-function(socket, aim){
+require(['socket.io','aim', 'hammer'],
+function(socket, aim, Hammer){
 
 
 	socket = io.connect();
@@ -19,6 +20,29 @@ function(socket, aim){
 
 	var body = document.body;
     var html = document.documentElement;
+    var songListElem = document.getElementById('song-list')
+    var songDetailElem = document.getElementById('song-detail');
+
+    // event handling
+    var mc = new Hammer(songDetailElem);
+    var mcCust = new Hammer.Manager(songDetailElem,{});
+
+    mc.get('pinch').set({enable: true});
+    mcCust.add(new Hammer.Tap({event: 'tripletap', taps: 3}));
+
+    mcCust.on('tripletap', function() {
+    	html.classList.toggle('fullscreen');
+    });
+
+    mc.on('pinchin pinchout', function(e) {
+    	var fs = parseFloat(body.style.fontSize) || 1;
+    	if (e.type === 'pinchin') {
+    		fs *= 1.1;
+    	} else {
+    		fs /= 1.1;
+    	}
+    	body.style.fontSize = fs + 'em';
+    });
 
 
 	socket.on('connect', function(client){

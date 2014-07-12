@@ -27,6 +27,7 @@ html, body {margin:0;padding:0;font-family: Helvetica, sans-serif;height:100%;}
 	opacity:1;
 	animation: fade-up-down 4s linear;
 	-webkit-animation: fade-up-down 4s linear;
+	transition: left 0.5s ease-in-out;
 }
 .scroll-indicator.fade {
 	opacity:0;
@@ -63,6 +64,7 @@ html, body {margin:0;padding:0;font-family: Helvetica, sans-serif;height:100%;}
 	padding:0;
 	border-right:1px solid #CCC;
 	font-size: 0.8em;
+	transition: all 0.5s ease-in-out;
 }
 .song-list-item.pending {
 	border-left:5px solid grey;
@@ -84,23 +86,35 @@ html, body {margin:0;padding:0;font-family: Helvetica, sans-serif;height:100%;}
 	background: #DDD;
 }
 
-.current-song {
+.song-detail {
 	position:absolute;
 	top:0;
 	bottom:0;
 	right:0;
 	left:210px;
-
+	transition: all 0.5s ease-in-out;
 }
-.current-song .title {margin-bottom: 0;}
+.song-detail .title {margin-bottom: 0;}
 
-.current-song .lyrics {
+.song-detail .lyrics {
 	font-size: 1.3em;
-	padding:10px 5px 10px;
+	padding:10px 0;
 	margin-top:10px;
 	border-top:solid 1px rgba(0,0,0,0.3);
 	border-bottom:solid 1px rgba(0,0,0,0.3);
 	white-space: pre-line;
 	-webkit-column-width: 21em;
 	-webkit-column-rule: 1px solid rgba(0,0,0,0.4);
+}
+
+.fullscreen .song-detail {
+	left:0;
+	padding-left:10px;
+	padding-right:10px;
+}
+.fullscreen .scroll-indicator {
+	left:0;
+}
+.fullscreen .song-list {
+	left: -200px;
 }
