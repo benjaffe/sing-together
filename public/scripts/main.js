@@ -5,8 +5,8 @@ require.config({
 	}
 });
 
-require(['socket.io','aim', 'hammer'],
-function(socket, aim, Hammer){
+require(['socket.io','aim'],
+function(socket, aim){
 
 
 	socket = io.connect();
@@ -24,27 +24,21 @@ function(socket, aim, Hammer){
     var songDetailElem = document.getElementById('song-detail');
 
     // event handling
-    // window.mc = new Hammer(songDetailElem);
-    window.mc = new Hammer.Manager(songDetailElem,{});
-    console.log(mc);
-
-    mc.add(new Hammer.Tap({event: 'tripletap', taps: 3}));
-    mc.add(new Hammer.Pinch());
-    mc.add(new Hammer.Pan({ direction: Hammer.DIRECTION_ALL }));
-
-    mc.on('tripletap', function() {
+    songDetailElem.addEventListener('dblclick', function() {
     	html.classList.toggle('fullscreen');
     });
 
-    mc.on('pinchin pinchout', function(e) {
-    	var fs = parseFloat(body.style.fontSize) || 1;
-    	if (e.type === 'pinchin') {
-    		fs *= 1.1;
-    	} else {
-    		fs /= 1.1;
-    	}
-    	body.style.fontSize = fs + 'em';
-    });
+    document.addEventListener('gestureend', function(e) {
+	    var fs = parseFloat(body.style.fontSize) || 1;
+	    if (e.scale < 0.9) {
+	        fs /= 1.1;
+	    } else if (e.scale > 1.1) {
+	        fs *= 1.1;
+	    } else {
+	    	return false;
+	    }
+	    body.style.fontSize = fs + 'em';
+	}, false);
 
 
 	socket.on('connect', function(client){
