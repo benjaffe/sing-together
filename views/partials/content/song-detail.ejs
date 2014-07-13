@@ -1,13 +1,13 @@
 <% if (typeof currentSong !== 'undefined') { %>
-<h2 class="title"><%= currentSong.title %></h2>
-<div class="artist <%if (!currentSong.artist){%>disabled<%}%>"><em><%= currentSong.artist %></em></div>
-<div class="key <%if (!currentSong.key){%>disabled<%}%>">in the key of <%= currentSong.key %></div>
-<div class="chords <%if (!currentSong.chords){%>disabled<%}%>"><%= currentSong.chords %></div>
-<div class="instruments <%if (!currentSong.instruments){%>disabled<%}%>">Instrumentation: <%= currentSong.instruments %></div>
-<div class="capo <%if (!currentSong.capo){%>disabled<%}%>">Capo on <%= currentSong.capo %></div>
-<div class="tuning <%if (!currentSong.tuning){%>disabled<%}%>">Tuning: <%= currentSong.tuning %></div>
-<div class="readiness <%if (!currentSong.readiness){%>disabled<%}%>">Readiness: <%= currentSong.readiness %></div>
-<div class="like <%if (!currentSong.like){%>disabled<%}%>">How much we like it: <%= currentSong.like %></div>
-<div class="categories <%if (!currentSong.categories){%>disabled<%}%>">Categories: <%= currentSong.categories %></div>
-<div class="lyrics <%if (!currentSong.lyrics){%>disabled<%}%>"><%= currentSong.lyrics %></div>
+<h2 class="title"><%= currentSong.title || '' %></h2>
+<div class="song-detail-item artist <%if (!currentSong.artist){%>disabled<%}%>">Artist: <em class="value"><%= currentSong.artist || '' %></em></div>
+<div class="song-detail-item key <%if (!currentSong.key){%>disabled<%}%>">In the key of: <span class="value"><%= currentSong.key || '' %></span></div>
+<div class="song-detail-item chords <%if (!currentSong.chords){%>disabled<%}%>">Chords: <span class="value"><%= currentSong.chords || '' %></span></div>
+<div class="song-detail-item instruments <%if (!currentSong.instruments){%>disabled<%}%>">Instrumentation: <span class="value"><%= currentSong.instruments || '' %></span></div>
+<div class="song-detail-item capo <%if (!currentSong.capo){%>disabled<%}%>">Capo on: <span class="value"><%= currentSong.capo || '' %></span></div>
+<div class="song-detail-item tuning <%if (!currentSong.tuning){%>disabled<%}%>">Tuning: <span class="value"><%= currentSong.tuning || '' %></span></div>
+<div class="song-detail-item readiness <%if (!currentSong.readiness){%>disabled<%}%>">Readiness: <span class="value"><%= currentSong.readiness || '' %></span></div>
+<div class="song-detail-item like <%if (!currentSong.like){%>disabled<%}%>">How much we like it: <span class="value"><%= currentSong.like || '' %></span></div>
+<div class="song-detail-item categories <%if (!currentSong.categories){%>disabled<%}%>">Categories: <span class="value"><%= currentSong.categories || '' %></span></div>
+<div class="song-detail-item lyrics <%if (!currentSong.lyrics){%>disabled<%}%>"><span class="value"><%= currentSong.lyrics || '' || '...lyrics go here...' %></span></div>
 <% } %>

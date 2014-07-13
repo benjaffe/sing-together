@@ -20,7 +20,7 @@ function(socket, aim){
 
 	var body = document.body;
     var html = document.documentElement;
-    var songListElem = document.getElementById('song-list')
+    var songListElem = document.getElementById('song-list');
     var songDetailElem = document.getElementById('song-detail');
 
     var latestTap = Date.now();
@@ -104,6 +104,23 @@ function(socket, aim){
 
 		document.getElementById('addsong-start').addEventListener('click', function(e){
 			document.getElementById('addsong-form').style.display = 'block';
+		});
+		document.getElementById('editsong-start').addEventListener('click', function(e) {
+			var forEach = Array.prototype.forEach;
+			if (this.textContent === 'Edit Song') {
+				this.textContent = 'Cancel Edit';
+				document.getElementById('song-detail').classList.add('editing');
+				forEach.call(document.querySelectorAll('.song-detail-item .value'), function(elem) {
+					elem.contentEditable = true;
+				});
+			} else {
+				this.textContent = 'Edit Song';
+				document.getElementById('song-detail').classList.remove('editing');
+				forEach.call(document.querySelectorAll('.song-detail-item .value'), function(elem) {
+					elem.contentEditable = false;
+				});
+			}
+
 		});
 		document.getElementById('addsong-cancel').addEventListener('click', function(e){
 			document.getElementById('addsong-form').style.display = 'none';
