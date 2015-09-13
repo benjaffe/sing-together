@@ -39,19 +39,31 @@ var SongList = React.createClass({
 
 var SingSingApp = React.createClass({
   getInitialState: function() {
-    return {songs: [], text: ''};
+    return {songs: [], songID: null};
   },
+
   componentWillMount: function() {
-    this.fbRef = new Firebase("https://sing-sing.firebaseio.com/songs/");
-    this.fbRef.on("child_added", function(dataSnapshot) {
-      this.state.songs.push(dataSnapshot.val());
+    var self = this;
+    this.fbRef = new Firebase("https://sing-sing.firebaseio.com/");
+
+    this.fbSongsRef = this.fbRef.child('songs');
+    this.fbSongsRef.on("child_added", function(ss) {
+      this.state.songs.push(ss.val());
       this.setState({
         songs: this.state.songs
       });
     }.bind(this));
+
+    this.fbCurrSongRef = this.fbRef.child('currentSongID');
+    this.fbCurrSongRef.on('value', function(ss) {
+      self.setState({ songID: ss.val() });
+      // this is for clients that are "following along" with the change
+      window.location.hash = '#' + ss.val();
+    }).bind(this);
   },
+
   render: function() {
-    var currentSongID = this.props.songID;
+    var currentSongID = this.state.songID;
     var currentSong = _.find(this.state.songs, function(song){
       return (song.id+'') === currentSongID;
     }.bind(this));
@@ -65,12 +77,15 @@ var SingSingApp = React.createClass({
   }
 });
 
-function render() {
+// the hash contains the current song
+function routeChanged() {
   var route = window.location.hash.substr(1);
-  React.render(<SingSingApp songID={route} />, document.getElementById('container'));
+  app.fbCurrSongRef.set(route);
 }
 
-window.addEventListener('hashchange', render);
-render();
+window.addEventListener('hashchange', routeChanged);
+
+// start everything! http://www.youtube.com/watch?v=vDy2xWpZWVc&t=0m28s
+var app = React.render(<SingSingApp />, document.getElementById('container'));
 
 
