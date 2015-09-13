@@ -1,0 +1,20 @@
+{
+  "name": "Sing",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node --harmony ./bin/www"
+  },
+  "main": "./bin/www",
+  "engines": {
+    "node": ">= 0.10",
+    "npm": ">= 1.4"
+  },
+  "dependencies": {
+    "body-parser": "~1.0.0",
+    "debug": "~0.7.4",
+    "ejs": "~0.8.5",
+    "express.io": "^1.1.13",
+    "morgan": "~1.0.0"
+  }
+}
