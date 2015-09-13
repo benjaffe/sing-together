@@ -86,6 +86,12 @@ html, body {margin:0;padding:0;font-family: Helvetica, sans-serif;height:100%;}
 	margin-left: -10px;
 }
 
+.song-edit-btn {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
 /*.song-list-item.pending {
 	border-left:5px solid grey;
 }

@@ -1,4 +1,10 @@
 var Song = React.createClass({
+  getInitialState: function() {
+    return { editing: false };
+  },
+  toggleEditMode: function() {
+    this.setState({ editing: !this.state.editing });
+  },
   render: function() {
     var currentSong = this.props.currentSong;
     if (!currentSong) {
@@ -9,6 +15,7 @@ var Song = React.createClass({
       <div className="song-details">
         <h2 className="song-title">Title: {currentSong.title}</h2>
         <h3 className="song-artist">Artist: {currentSong.artist}</h3>
+        <button className="song-edit-btn" onClick={this.toggleEditMode}>{this.state.editing ? 'Editing Song' : 'Edit Song'}</button>
         <div className="row song-property-group">
           <div className="col-xs-4 col-sm-2 song-property song-key">Key: <br/>{currentSong.key}</div>
           <div className="col-xs-4 col-sm-2 song-property song-capo">Capo: <br/>{currentSong.capo}</div>
