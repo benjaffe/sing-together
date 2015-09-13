@@ -9,14 +9,14 @@ var Song = React.createClass({
       <div className="song-details">
         <h2 className="song-title">Title: {currentSong.title}</h2>
         <h3 className="song-artist">Artist: {currentSong.artist}</h3>
-        <div className="row">
-          <div className="col-sm-3 song-key">Key: {currentSong.key}</div>
-          <div className="col-sm-3 song-capo">Capo: {currentSong.capo}</div>
-          <div className="col-sm-3 song-readiness">Readiness: {currentSong.readiness}</div>
-          <div className="col-sm-3 song-whose">Whose: {currentSong.whose}</div>
-          <div className="col-sm-3 song-instruments">Instruments: {currentSong.instruments}</div>
+        <div className="row song-property-group">
+          <div className="col-xs-4 col-sm-2 song-property song-key">Key: <br/>{currentSong.key}</div>
+          <div className="col-xs-4 col-sm-2 song-property song-capo">Capo: <br/>{currentSong.capo}</div>
+          <div className="col-xs-4 col-sm-2 song-property song-readiness">Readiness: <br/>{currentSong.readiness}</div>
+          <div className="col-xs-4 col-sm-2 song-property song-whose">Whose: <br/>{currentSong.whose}</div>
+          <div className="col-xs-6 col-sm-3 song-property song-instruments">Instruments: <br/>{currentSong.instruments}</div>
         </div>
-        <pre className="song-lyrics">Lyrics: {currentSong.lyrics}</pre>
+        <div className="song-lyrics">Lyrics: {currentSong.lyrics}</div>
       </div>
     );
   }
@@ -55,7 +55,7 @@ var SingSingApp = React.createClass({
     var currentSong = _.find(this.state.songs, function(song){
       return (song.id+'') === currentSongID;
     }.bind(this));
-    console.log(currentSongID, currentSong);
+
     return (
       <div>
         <SongList songs={this.state.songs} />

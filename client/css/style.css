@@ -53,7 +53,8 @@ html, body {margin:0;padding:0;font-family: Helvetica, sans-serif;height:100%;}
 	left:0;
 	width:200px;
 }
-*/.song-list {
+*/
+.song-list {
 	position:fixed;
 	top:0;
 	left:0;
@@ -69,7 +70,20 @@ html, body {margin:0;padding:0;font-family: Helvetica, sans-serif;height:100%;}
 }
 
 .song-details {
-	padding-left: 210px;
+	padding: 0 10px 0 210px;
+}
+
+.song-property-group .song-property {
+	margin-bottom: 10px;
+}
+
+.song-lyrics {
+	white-space: pre-wrap;
+	background: #eee;
+	border: 1px solid #999;
+	padding: 10px;
+	border-radius: 5px;
+	margin-left: -10px;
 }
 
 /*.song-list-item.pending {
