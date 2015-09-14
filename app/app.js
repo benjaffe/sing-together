@@ -54,7 +54,17 @@ define(['react', 'firebase', 'lodash'], function(React, Firebase, _) {
 
   var SingSingApp = React.createClass({
     getInitialState: function() {
-      return {songs: [], songID: null};
+      var body = document.body;
+      var html = body.parentElement;
+      return {
+        songs: [],
+        songID: null,
+        scrollPercent: 0,
+        scrollDisabled: false,
+        uid: Date.now() + Math.round(Math.random()*100000),
+        documentHeight: Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight ),
+        documentWidth: Math.max( body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth )
+      };
     },
 
     componentWillMount: function() {
@@ -75,6 +85,64 @@ define(['react', 'firebase', 'lodash'], function(React, Firebase, _) {
         // this is for clients that are "following along" with the change
         window.location.hash = '#' + ss.val();
       }).bind(this);
+
+      this.fbCurrScrollRef = this.fbRef.child('scroll');
+      this.fbCurrScrollRef.on('value', function(ss) {
+        var scroll = ss.val();
+        // if we're the scroller, don't change our scroll position
+        // ...unless the scroller is > 5000 ms old
+        if ((scroll.scroller && scroll.scroller === self.state.uid)) {
+          return;
+        }
+
+        self.setState({ scroll: scroll });
+
+        // this is for clients that are "following along" with the change
+        // function scrollAim(scroll) {
+        //   var currentScroll = window.scrollY / (self.state.documentHeight - window.innerHeight);
+        //   var scrollIntermediate = {
+        //     y: (currentScroll + scroll.y) / 2
+        //   };
+        //   console.log(currentScroll, scroll.y);
+        //   window.scrollTo(0, scrollIntermediate.y * self.state.documentHeight);
+        //   if (Math.abs(currentScroll - scroll.y) > 0.5) {
+        //     console.log(Math.abs(currentScroll - scroll.y), currentScroll, scroll.y);
+        //     setTimeout(scrollAim.bind(null, scroll), 16);
+        //   }
+        // }
+        // scrollAim(self.state.scroll);
+
+      }).bind(this);
+
+      document.addEventListener('scroll', _.debounce(this.scrollHappened, 100, {maxWait: 100}));
+    },
+
+    componentDidMount: function() {
+      this.setState(this.getDocumentDimensions());
+    },
+
+    getDocumentDimensions: function() {
+      var body = document.body;
+      var html = body.parentElement;
+      return {
+        documentHeight: Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight ),
+        documentWidth: Math.max( body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth )
+      };
+    },
+
+    scrollHappened: function() {
+
+      this.setState(this.getDocumentDimensions);
+
+      // this represents our position (from 0 to 1) on the page
+      var scrollPos = {
+        scroller: this.state.uid,
+        timestamp: Firebase.ServerValue.TIMESTAMP,
+        // x: Math.min(window.scrollX / (this.state.documentWidth - window.innerWidth), 1),
+        y: Math.min(window.scrollY / (this.state.documentHeight - window.innerHeight), 1)
+      };
+
+      app.fbCurrScrollRef.set(scrollPos);
     },
 
     render: function() {
